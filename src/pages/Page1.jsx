@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Pentagon from "../assets/icons/bg-pentagon.svg";
 import Icon1 from "../assets/icons/icon-scissors.svg";
 import Icon2 from "../assets/icons/icon-paper.svg";
@@ -8,113 +9,56 @@ import Icon5 from "../assets/icons/icon-spock.svg";
 import Rules from "../components/Rules";
 import Score from "../components/Score";
 
-const Welcome = () => {
+const Page1 = () => {
   const [showRules, setShowRules] = useState(false);
+  const navigate = useNavigate(); // Hook untuk navigasi
+  const handleShowRules = () => setShowRules(true);
+  const handleHideRules = () => setShowRules(false);
 
-  const handleShowRules = () => {
-    setShowRules(true);
-  };
+  // Data untuk ikon yang digunakan
+  const iconsData = [
+    { id: "scissors", icon: Icon1, label: "Scissors", bgColor: "bg-yellow2", borderColor: "bg-yellow1" },
+    { id: "paper", icon: Icon2, label: "Paper", bgColor: "bg-blue2", borderColor: "bg-blue1" },
+    { id: "rock", icon: Icon3, label: "Rock", bgColor: "bg-red2", borderColor: "bg-red1" },
+    { id: "lizard", icon: Icon4, label: "Lizard", bgColor: "bg-purple2", borderColor: "bg-purple1" },
+    { id: "spock", icon: Icon5, label: "Spock", bgColor: "bg-cyan2", borderColor: "bg-cyan1" },
+  ];
 
-  const handleHideRules = () => {
-    setShowRules(false);
+  // Fungsi untuk navigasi ke Page2 dengan mengirimkan komponen wrapper beserta ikon
+  const handleIconClick = (iconData) => {
+    navigate("/page2", { state: { selectedIcon: iconData } }); // Mengirimkan data ikon dan wrapper-nya
   };
 
   return (
-    <div className="bg-color1 min-h-screen flex flex-col items-center px-4 md:px-28 md:py-4 ">
+    <div className="bg-color1 min-h-screen flex flex-col items-center px-4 md:px-28 md:py-4">
+      <Score />
 
-    <Score />
-
-      <div className="">
+      {/* Pentagon Container */}
+      <div className="relative w-[70vw] md:w-[25vw] aspect-square mt-[4vw] flex items-center justify-center">
+        {/* Background Pentagon */}
         <img
           src={Pentagon}
-          alt="pentagon"
-          className="mt-[14vw] md:mt-[10vw] w-[70%] h-auto md:w-[100%] md:h-auto block mx-auto"
+          alt="Pentagon Background"
+          className="absolute w-full h-full object-contain"
         />
-      </div>
 
-      <div className="flex md:-mt-[33vw] -mt-[70vw]">
-        <div className="bg-yellow2 rounded-full w-[5rem] h-[5rem] md:w-[7rem] md:h-[7rem] flex items-center justify-center relative">
-          <div className="bg-yellow1 rounded-full w-[5rem] h-[5rem] -mt-[0.4rem] md:w-[7rem] md:h-[7rem] md:-mt-[0.6rem] flex items-center justify-center relative">
-            <div className="bg-gray1 rounded-full w-[3.8rem] h-[3.8rem] md:w-[5rem] md:h-[5rem] flex items-center justify-center relative">
-              <div className="bg-white rounded-full w-[3.8rem] h-[3.8rem] md:w-[5rem] md:h-[5rem] absolute top-[53%] left-[50%] md:top-[54%] md:left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center">
-                <img
-                  src={Icon1}
-                  alt="icon1"
-                  className="md:w-[2.6rem] w-[1.8rem] h-auto"
-                />
-              </div>
+        {/* Icons Container */}
+        <div className="grid grid-cols-3 grid-rows-3 gap-[25%] relative w-full h-full">
+          {iconsData.map((iconData, index) => (
+            <div
+              key={index}
+              className={`flex items-center justify-center ${getIconPositionClass(index)}`}
+              onClick={() => handleIconClick(iconData)} // Menangani klik pada ikon
+            >
+              <IconWrapper {...iconData} />
             </div>
-          </div>
+          ))}
         </div>
       </div>
 
-      <div className="flex mt-[0vw] -ml-[55vw] md:mt-[0vw] md:-ml-[25vw]">
-        <div className="bg-cyan2 rounded-full w-[5rem] h-[5rem] md:w-[7rem] md:h-[7rem] flex items-center justify-center relative">
-          <div className="bg-cyan1 rounded-full w-[5rem] h-[5rem] -mt-[0.4rem] md:w-[7rem] md:h-[7rem] md:-mt-[0.6rem] flex items-center justify-center relative">
-            <div className="bg-gray1 rounded-full w-[3.8rem] h-[3.8rem] md:w-[5rem] md:h-[5rem] flex items-center justify-center relative">
-              <div className="bg-white rounded-full w-[3.8rem] h-[3.8rem] md:w-[5rem] md:h-[5rem] absolute top-[53%] left-[50%] md:top-[54%] md:left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center">
-                <img
-                  src={Icon5}
-                  alt="icon2"
-                  className="w-[1.8rem] md:w-[2.3rem] h-auto"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex -mt-[25vw] ml-[55vw] md:-mt-[10vw] md:ml-[25vw]">
-        <div className="bg-blue2 rounded-full w-[5rem] h-[5rem] md:w-[7rem] md:h-[7rem] flex items-center justify-center relative">
-          <div className="bg-blue1 rounded-full w-[5rem] h-[5rem] -mt-[0.4rem] md:w-[7rem] md:h-[7rem] md:-mt-[0.6rem] flex items-center justify-center relative">
-            <div className="bg-gray1 rounded-full w-[3.8rem] h-[3.8rem] md:w-[5rem] md:h-[5rem] flex items-center justify-center relative">
-              <div className="bg-white rounded-full w-[3.8rem] h-[3.8rem] md:w-[5rem] md:h-[5rem] absolute top-[53%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center">
-                <img
-                  src={Icon2}
-                  alt="icon3"
-                  className="w-[1.8rem] md:w-[2.5rem] h-auto"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex mt-[8vw] ml-[40vw] md:mt-[5vw] md:ml-[20vw]">
-        <div className="bg-red2 rounded-full w-[5rem] h-[5rem] md:w-[7rem] md:h-[7rem] flex items-center justify-center relative">
-          <div className="bg-red1 rounded-full w-[5rem] h-[5rem] -mt-[0.4rem] md:w-[7rem] md:h-[7rem] md:-mt-[0.6rem] flex items-center justify-center relative">
-            <div className="bg-gray1 rounded-full w-[3.5rem] h-[3.5rem] md:w-[5rem] md:h-[5rem] flex items-center justify-center relative">
-              <div className="bg-white rounded-full w-[3.5rem] h-[3.5rem] md:w-[5rem] md:h-[5rem] absolute top-[54%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center">
-                <img
-                  src={Icon3}
-                  alt="icon3"
-                  className="w-[1.8rem] md:w-[2.5rem] h-auto"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex -mt-[24vw] -ml-[40vw] md:-mt-[10.5vw] md:-ml-[20vw]">
-        <div className="bg-purple2 rounded-full w-[5rem] h-[5rem] md:w-[7rem] md:h-[7rem] flex items-center justify-center relative">
-          <div className="bg-purple1 rounded-full w-[5rem] h-[5rem] -mt-[0.4rem] md:w-[7rem] md:h-[7rem] md:-mt-[0.6rem] flex items-center justify-center relative">
-            <div className="bg-gray1 rounded-full w-[3.5rem] h-[3.5rem] md:w-[5rem] md:h-[5rem] flex items-center justify-center relative">
-              <div className="bg-white rounded-full w-[3.5rem] h-[3.5rem] md:w-[5rem] md:h-[5rem] absolute top-[54%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center">
-                <img
-                  src={Icon4}
-                  alt="icon4"
-                  className="w-[1.8rem] md:w-[2.5rem] h-auto"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="w-full flex justify-center md:relative">
+      <div className="relative w-full h-full">
         <button
-          className="text-white text-sm md:text-xl border border-white rounded-md py-1 px-8 mt-12 md:mt-4 md:absolute md:top-8 md:-right-16"
+          className="absolute -bottom-10 -right-20 text-white text-sm md:text-xl border border-white rounded-md py-1 px-8"
           onClick={handleShowRules}
         >
           Rules
@@ -126,4 +70,35 @@ const Welcome = () => {
   );
 };
 
-export default Welcome;
+/**
+ * Reusable Icon Wrapper Component
+ */
+const IconWrapper = ({ bgColor, borderColor, icon, label }) => {
+  return (
+    <div className={`${bgColor} rounded-full w-[5rem] h-[5rem] md:w-[7rem] md:h-[7rem] flex items-center justify-center relative`}>
+      <div className={`${borderColor} rounded-full w-[4.5rem] h-[4.5rem] md:w-[7rem] md:h-[7rem] md:-mt-[0.5rem] flex items-center justify-center`}>
+        <div className="bg-gray1 rounded-full w-[3.5rem] h-[3.5rem] md:w-[5.5rem] md:h-[5.5rem] flex items-center justify-center -mt-[0.2rem]">
+          <div className="bg-white rounded-full w-[3rem] h-[3rem] md:w-[5.5rem] md:h-[5.5rem] mt-[0.5rem] flex items-center justify-center">
+            <img src={icon} alt={label} className="w-[2rem] md:w-[2.5rem] h-auto" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Menentukan posisi grid berdasarkan index
+ */
+const getIconPositionClass = (index) => {
+  switch (index) {
+    case 0: return "col-span-3 row-span-1"; // Scissors (Top)
+    case 1: return "md:mr-[50%] md:-mt-[5vw] col-span-1 row-span-1"; // Lizard (Left Middle)
+    case 2: return "md:ml-[50%] md:-mt-[5vw] col-start-3 row-span-1"; // Spock (Right Middle)
+    case 3: return "md:-mr-[5vw] md:-mt-[1vw] col-span-1 row-start-3"; // Rock (Bottom Left)
+    case 4: return "md:-ml-[5vw] md:-mt-[1vw] col-start-3 row-start-3"; // Paper (Bottom Right)
+    default: return "";
+  }
+};
+
+export default Page1;

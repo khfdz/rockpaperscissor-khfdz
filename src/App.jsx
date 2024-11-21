@@ -1,16 +1,17 @@
-import Welcome from './pages/Welcome'
-import Page1 from './pages/Page1'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Page1 from './pages/Page1';
+import Page2 from './pages/Page2';
+import './App.css';
 
 function App() {
-
-
   return (
-    <div>
-      {/* <Welcome  /> */}
-      <Page1 />
-      </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Page1 />} />
+        <Route path="/page2" element={<Page2 />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
