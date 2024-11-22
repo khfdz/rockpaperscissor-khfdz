@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
@@ -26,13 +25,21 @@ export default {
         'purple2': '#5f37aa',
         'cyan1': '#3fb7cf',
         'cyan2': '#2d8eae',
-    },
-    borderWidth: {
-      'light': '8px',
-      'medium': '12px',
-      'bold': '15px',
-    },
+      },
+      borderWidth: {
+        'light': '8px',
+        'medium': '12px',
+        'bold': '15px',
+      },
     },
   },
   plugins: [],
+  safelist: [
+    'bg-yellow1', 'bg-yellow2',
+    'bg-gray1',
+    'bg-blue1', 'bg-blue2',
+    'bg-red1', 'bg-red2',
+    'bg-purple1', 'bg-purple2',
+    'bg-cyan1', 'bg-cyan2',
+  ],
 };
