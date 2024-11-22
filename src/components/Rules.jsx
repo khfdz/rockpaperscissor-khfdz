@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import Image1 from "../assets/icons/image-rules-bonus.svg";
-import IconClose from "../assets/icons/icon-close.svg";
+import Image1 from "/icons/image-rules-bonus.svg";
+import IconClose from "/icons/icon-close.svg";
 
 
 const Rules = ({ onClose }) => {

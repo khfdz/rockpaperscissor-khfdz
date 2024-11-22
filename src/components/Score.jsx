@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";  // Untuk mengambil state dari Redux
-import Logo from "../assets/icons/logo-bonus.svg";
+import Logo from "/icons/logo-bonus.svg";
 
 const Score = () => {
   // Mengambil nilai score dari Redux store

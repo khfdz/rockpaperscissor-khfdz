@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Pentagon from "../assets/icons/bg-pentagon.svg";
+import Pentagon from "/icons/bg-pentagon.svg";
 import Rules from "../components/Rules";
 import Score from "../components/Score";
 import RulesButton from "../components/RulesButton";
