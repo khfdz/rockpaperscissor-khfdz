@@ -60,7 +60,7 @@ const Page1 = () => {
   };
 
   return (
-    <div className="bg-color1 min-h-screen flex flex-col items-center px-4 md:px-28 md:py-4">
+    <div className="bg-color1 w-full h-screen  flex flex-col items-center px-4 md:px-28 md:py-4">
       <Score /> {/* Menampilkan score dari Redux */}
 
       <div className="relative w-[70vw] md:w-[25vw] aspect-square mt-[4vw] flex items-center justify-center">
@@ -74,8 +74,8 @@ const Page1 = () => {
         <IconPicker iconsData={iconsData} onIconClick={handleIconClick} />
       </div>
 
-      <RulesButton onClick={handleShowRules} />
 
+        <RulesButton onClick={handleShowRules} />
       {showRules && <Rules onClose={handleHideRules} />}
     </div>
   );
