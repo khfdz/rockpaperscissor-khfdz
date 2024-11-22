@@ -1,0 +1,38 @@
+[
+    {
+      "id": "scissors",
+      "icon": "src/assets/icons/icon-scissors.svg",
+      "label": "Scissors",
+      "bgColor": "bg-yellow2",
+      "borderColor": "bg-yellow1"
+    },
+    {
+      "id": "spock",
+      "icon": "src/assets/icons/icon-spock.svg",
+      "label": "Spock",
+      "bgColor": "bg-cyan2",
+      "borderColor": "bg-cyan1"
+    },
+    {
+      "id": "paper",
+      "icon": "src/assets/icons/icon-paper.svg",
+      "label": "Paper",
+      "bgColor": "bg-blue2",
+      "borderColor": "bg-blue1"
+    },
+    {
+      "id": "lizard",
+      "icon": "src/assets/icons/icon-lizard.svg",
+      "label": "Lizard",
+      "bgColor": "bg-purple2",
+      "borderColor": "bg-purple1"
+    },
+    {
+      "id": "rock",
+      "icon": "src/assets/icons/icon-rock.svg",
+      "label": "Rock",
+      "bgColor": "bg-red2",
+      "borderColor": "bg-red1"
+    }
+  ]
+  

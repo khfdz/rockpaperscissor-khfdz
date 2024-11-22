@@ -1,64 +1,121 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useEffect, useState } from "react";
 import Score from "../components/Score";
+import IconPicker from "../components/IconPicker"; // Mengimpor IconPicker
+import RulesButton from "../components/RulesButton";
+import Rules from "../components/Rules";
 
 const Page2 = () => {
-  const location = useLocation(); // Mengambil data yang dikirim melalui navigasi
-  const { selectedIcon } = location.state || {}; // Mengambil data ikon yang dikirim
+  const { state } = useLocation();
+  const { selectedIcon, houseIcon } = state; // Terima state dari Page1
+  const [result, setResult] = useState("");
+  const [showRules, setShowRules] = useState(false);
+  const [isHouseLoading, setIsHouseLoading] = useState(true); // State untuk loading
+  const [isPlayerWinner, setIsPlayerWinner] = useState(false); // State untuk menangnya player
+  const [isHouseWinner, setIsHouseWinner] = useState(false); // State untuk menangnya house
 
-  // Pastikan selectedIcon ada sebelum mencoba untuk menampilkan
-  if (!selectedIcon) {
-    return <div>Data tidak ditemukan</div>;
-  }
+  // Setup untuk navigate
+  const navigate = useNavigate();
 
-  const { icon, bgColor, borderColor, label } = selectedIcon;
+  const handleShowRules = () => setShowRules(true);
+  const handleHideRules = () => setShowRules(false);
 
-  // Fungsi IconWrapper yang sama dengan yang digunakan di Page1
-  const IconWrapper = ({ bgColor, borderColor, icon }) => (
-    <div className={`${bgColor} rounded-full w-[5rem] h-[5rem] md:w-[15rem] md:h-[15rem] flex items-center justify-center relative`}>
-      <div className={`${borderColor} rounded-full w-[4.5rem] h-[4.5rem] md:w-[15rem] md:h-[15rem] md:-mt-[1rem] flex items-center justify-center`}>
-        <div className="bg-gray1 rounded-full w-[3.5rem] h-[3.5rem] md:w-[11rem] md:h-[11rem] flex items-center justify-center -mt-[0.5rem]">
-          <div className="bg-white rounded-full w-[3rem] h-[3rem] md:w-[11rem] md:h-[11rem] mt-[1rem] flex items-center justify-center">
-            <img src={icon} alt="Icon" className="w-[2rem] md:w-[5rem] h-auto" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  useEffect(() => {
+    // Logika untuk menentukan pemenang
+    if (!isHouseLoading) {
+      if (selectedIcon.id === houseIcon.id) {
+        setResult("It's a tie!");
+        setIsPlayerWinner(false);
+        setIsHouseWinner(false);
+      } else if (
+        (selectedIcon.id === "scissors" && (houseIcon.id === "paper" || houseIcon.id === "lizard")) ||
+        (selectedIcon.id === "paper" && (houseIcon.id === "rock" || houseIcon.id === "spock")) ||
+        (selectedIcon.id === "rock" && (houseIcon.id === "scissors" || houseIcon.id === "lizard")) ||
+        (selectedIcon.id === "lizard" && (houseIcon.id === "spock" || houseIcon.id === "paper")) ||
+        (selectedIcon.id === "spock" && (houseIcon.id === "scissors" || houseIcon.id === "rock"))
+      ) {
+        setResult("You win!");
+        setIsPlayerWinner(true);
+        setIsHouseWinner(false);
+      } else {
+        setResult("You lose!");
+        setIsPlayerWinner(false);
+        setIsHouseWinner(true);
+      }
+    }
+  }, [selectedIcon, houseIcon, isHouseLoading]);
+
+  useEffect(() => {
+    // Simulasi loading house pick selama 3 detik
+    const timeout = setTimeout(() => {
+      setIsHouseLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  // Fungsi untuk kembali ke Page1
+  const handlePlayAgain = () => {
+    navigate("/", { replace: true }); // Navigasi kembali ke halaman pertama
+  };
 
   return (
-    <div className="bg-color1 min-h-screen flex flex-col items-center px-4 md:px-28 md:py-4">
-      <Score  />
+    <div className="bg-color1 w-screen h-screen flex flex-col items-center px-4 md:px-28 md:py-4">
+      <Score />
 
-    <div className="mt-8">
+      <div className="relative w-full mt-[3vw] flex items-center justify-between">
+        {/* Your Pick */}
+        <div className="text-center flex flex-col items-center">
+          <h2 className="text-2xl font-semibold mb-[8vw] text-white">You Picked</h2>
 
-    
-      {/* Teks di tengah */}
-      <div className="flex items-center justify-center mb-6">
-       
-        {/* Ikon Kiri */}
-        <div className="mr-6">
-            <p className="mb-8 text-xl text-white">You Picked</p>
-          <IconWrapper bgColor={bgColor} borderColor={borderColor} icon={icon} />
+          <div className="flex items-center justify-center relative">
+            {/* Efek animasi jika player menang */}
+            {isPlayerWinner && (
+              <>
+<div className="bg-gray-200 opacity-[1%] rounded-full w-[18rem] h-[18rem] absolute animate-pulse"></div>
+<div className="bg-gray-200 opacity-[2%] rounded-full w-[22rem] h-[22rem] absolute animate-pulse"></div>
+<div className="bg-gray-200 opacity-[10%] rounded-full w-[26rem] h-[26rem] absolute animate-pulse"></div>
+              </>
+            )}
+
+            <IconPicker iconsData={[selectedIcon]} onIconClick={() => {}} useWrapper2={true} />
+          </div>
         </div>
 
-        {/* Teks You Lose / Play Again */}
-        <div className="text-white text-3xl">
-            
-           <p>You Lose</p> 
-            <button className="bg-blue-500 text-white px-4 py-2 rounded">Play Again</button>
+        {/* Center Result */}
+        <div className="flex flex-col mt-[0vw] items-center justify-center">
+          <h2 className="text-5xl font-bold text-white">{!isHouseLoading && result}</h2>
+          <button className="bg-white text-color1 rounded-md px-4 py-2 mt-4 z-50" onClick={handlePlayAgain}>Play Again</button>
+        </div>
 
+        {/* House Pick */}
+        <div className="text-center w-[30%] flex flex-col items-center">
+          <h2 className="text-2xl font-semibold mb-[8vw] text-white">The House Pick</h2>
+          {isHouseLoading ? (
+            // Animasi loading titik-titik
+            <div className="text-white text-4xl font-bold flex space-x-2 animate-bounce">
+              <span>.</span>
+              <span>.</span>
+              <span>.</span>
             </div>
-
-        {/* Ikon Kanan */}
-        <div className="ml-6 ">
-            <p className="mb-8 text-xl text-white">The House Picked</p>
-          <IconWrapper bgColor={bgColor} borderColor={borderColor} icon={icon} />
+          ) : (
+            <div className="flex items-center justify-center relative">
+              {/* Efek animasi jika house menang */}
+              {isHouseWinner && (
+                <>
+                  <div className="bg-gray1 opacity-[8%] rounded-full w-[18rem] h-[18rem] absolute animate-ping"></div>
+                  <div className="bg-gray1 opacity-[6%] rounded-full w-[22rem] h-[22rem] absolute animate-ping"></div>
+                  <div className="bg-gray1 opacity-[4%] rounded-full w-[26rem] h-[26rem] absolute animate-ping"></div>
+                </>
+              )}
+              <IconPicker iconsData={[houseIcon]} onIconClick={() => {}} useWrapper2={true} />
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Tombol Play Again */}
-     
-    </div>
+      <RulesButton onClick={handleShowRules} />
+      {showRules && <Rules onClose={handleHideRules} />}
     </div>
   );
 };
